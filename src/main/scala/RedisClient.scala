@@ -2,13 +2,14 @@ package com.redis
 
 import com.redis.operations._
 
-class Redis(val host: String = "localhost", val port: Int = 6379) extends Operations
-                                             with ListOperations
-                                             with SetOperations
-                                             with NodeOperations
-                                             with KeySpaceOperations
-                                             with SortOperations
-                                             with SortedSetOperations {
+case class Redis(val host: String = "localhost", val port: Int = 6379)
+     extends Operations
+     with ListOperations
+     with SetOperations
+     with NodeOperations
+     with KeySpaceOperations
+     with SortOperations
+     with SortedSetOperations {
 
   // Points to the connection to a server instance
   val connection = Connection(host, port)

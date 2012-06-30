@@ -1,6 +1,4 @@
-package com.redis.operations
-
-import com.redis.Connection
+package com.redis
 
 trait SortedSetOperations{
 

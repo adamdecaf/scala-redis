@@ -3,17 +3,17 @@ package com.redis
 import com.redis.operations._
 import scala.collection.mutable.ArrayBuffer
 
-class RedisCluster(val hosts: String*) extends Operations
-                                       with ListOperations
-                                       with SetOperations
-                                       with HashRing
-                                       with SortOperations
-                                       with SortedSetOperations {
+case class RedisCluster(val hosts: String*)
+     extends Operations
+     with ListOperations
+     with SetOperations
+     with HashRing
+     with SortOperations
+     with SortedSetOperations {
 
   // Get Redis Client connection inside the HashRing.
-  def getConnection(key: String) = {
+  def getConnection(key: String) =
     getNode(key).connection
-  }
 
   // Default value used on MemCache client.
   private val NUMBER_OF_REPLICAS = 160

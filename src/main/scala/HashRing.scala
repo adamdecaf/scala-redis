@@ -7,7 +7,6 @@ import scala.collection.mutable.Map
 trait HashRing {
 
   val replicas: Int
-
   var sortedKeys: List[Long] = List()
   var cluster = new ArrayBuffer[Redis]
   val ring = Map[Long, Redis]()

@@ -1,13 +1,4 @@
-package com.redis.operations
-
-import com.redis.Connection
-
-object CreateRedisCommand {
-  def apply(command: String, entries: String*) =
-    entries.foldLeft(command) {
-      (acc, entry) => acc + " %s".format(entry)
-    } + "\r\n"
-}
+package com.redis
 
 trait Operations {
 
