@@ -1,10 +1,5 @@
 package com.redis
 
-/**
- * Hash Ring
- *
- */
-
 import java.util.zip.CRC32
 import scala.collection.mutable.ArrayBuffer
 import scala.collection.mutable.Map

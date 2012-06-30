@@ -2,15 +2,10 @@ package com.redis.operations
 
 import com.redis.Connection
 
-/**
- * Redis set operations
- *
- */
-
 trait SetOperations{
-  
+
   def getConnection(key: String): Connection
-  
+
   // SADD
   // Add the specified member to the set value stored at key.
   def setAdd(key: String, value: String): Boolean = {
@@ -18,7 +13,7 @@ trait SetOperations{
     connection.write("SADD "+key+" "+value.length+"\r\n"+value+"\r\n")
     connection.readBoolean
   }
-  
+
   // SREM
   // Remove the specified member from the set value stored at key.
   def setDelete(key: String, value: String): Boolean = {
@@ -26,7 +21,7 @@ trait SetOperations{
     connection.write("SREM "+key+" "+value.length+"\r\n"+value+"\r\n")
     connection.readBoolean
   }
-  
+
   // SCARD
   // Return the number of elements (the cardinality) of the Set at key.
   def setCount(key: String): Option[Int] = {
@@ -34,7 +29,7 @@ trait SetOperations{
     connection.write("SCARD "+key+"\r\n")
     connection.readInt
   }
-  
+
   // SMEMBERS
   // Return all the members of the Set value at key.
   def setMembers(key: String): Option[Set[String]] = {
@@ -42,7 +37,7 @@ trait SetOperations{
     connection.write("SMEMBERS "+key+"\r\n")
     connection.readSet
   }
-  
+
   // SPOP
   // Remove and return (pop) a random element from the Set value at key.
   def setPop(key: String): Option[String] = {
@@ -50,7 +45,7 @@ trait SetOperations{
     connection.write("SPOP "+key+"\r\n")
     connection.readString
   }
-  
+
   // SMOVE
   // Move the specified member from one Set to another atomically.
   def setMove(sourceKey: String, destKey: String, value: String): Boolean = {
@@ -58,7 +53,7 @@ trait SetOperations{
     connection.write("SMOVE "+sourceKey+" "+destKey+" "+value+"\r\n")
     connection.readBoolean
   }
-  
+
   // SISMEMBER
   // Test if the specified value is a member of the Set at key.
   def setMemberExists(key: String, value: String): Boolean = {
@@ -66,7 +61,7 @@ trait SetOperations{
     connection.write("SISMEMBER "+key+" "+value.length+"\r\n"+value+"\r\n")
     connection.readBoolean
   }
-  
+
   // SINTER
   // Return the intersection between the Sets stored at key1, key2, ..., keyN.
   def setIntersect(keys: String*): Option[Set[String]] = {
@@ -74,7 +69,7 @@ trait SetOperations{
     connection.write("SINTER "+keys.mkString(" ")+"\r\n")
     connection.readSet
   }
-  
+
   // SINTERSTORE
   // Compute the intersection between the Sets stored at key1, key2, ..., keyN, and store the resulting Set at dstkey.
   def setInterStore(key: String, keys: String*): Boolean = {
@@ -82,7 +77,7 @@ trait SetOperations{
     connection.write("SINTERSTORE "+key+" "+keys.mkString(" ")+"\r\n")
     connection.readBoolean
   }
-  
+
   // SDIFF
   // Return the difference between the Set stored at key1 and all the Sets key2, ..., keyN.
   def setDiff(keys: String*): Option[Set[String]] = {
@@ -90,7 +85,7 @@ trait SetOperations{
     connection.write("SDIFF "+keys.mkString(" ")+"\r\n")
     connection.readSet
   }
-  
+
   // SDIFFSTORE
   // Compute the difference between the Set key1 and all the Sets key2, ..., keyN, and store the resulting Set at dstkey.
   def setDiffStore(key: String, keys: String*): Boolean = {
@@ -98,7 +93,7 @@ trait SetOperations{
     connection.write("SDIFFSTORE "+key+" "+keys.mkString(" ")+"\r\n")
     connection.readBoolean
   }
-  
+
   // SUNION
   // Return the union between the Sets stored at key1, key2, ..., keyN.
   def setUnion(keys: String*): Option[Set[String]] = {
@@ -106,7 +101,7 @@ trait SetOperations{
     connection.write("SUNION "+keys.mkString(" ")+"\r\n")
     connection.readSet
   }
-  
+
   // SUNIONSTORE
   // Compute the union between the Sets stored at key1, key2, ..., keyN, and store the resulting Set at dstkey.
   def setUnionStore(key: String, keys: String*): Boolean = {
@@ -114,13 +109,13 @@ trait SetOperations{
     connection.write("SUNIONSTORE "+key+" "+keys.mkString(" ")+"\r\n")
     connection.readBoolean
   }
-  
-  // SRANDMEMBER 
+
+  // SRANDMEMBER
   // Return a random member of the Set value at key
   def setRandomMember(key: String): Option[String] = {
     val connection = getConnection(key)
     connection.write("SRANDMEMBER "+key+"\r\n")
     connection.readString
   }
-  
+
 }

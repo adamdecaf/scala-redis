@@ -1,39 +1,33 @@
 package com.redis
 
-/**
- * Socket operations
- *
- */
-
 import java.io._
 import java.net.Socket
 
 trait SocketOperations {
-  
+
   // Response codes from the Redis server
-  // they tell you what's coming next from the server.
   val ERR    = "-"
   val OK     = "+OK"
   val SINGLE = "+"
   val BULK   = "$"
   val MULTI  = "*"
   val INT    = ":"
-  
+
   val host: String
   val port: Int
-  
+
   // File descriptors.
   var socket: Socket = null
   var out: OutputStream = null
   var in: BufferedReader = null
-  
+
   def getOutputStream: OutputStream = out
   def getInputStream: BufferedReader = in
   def getSocket: Socket = socket
 
   def connected = { getSocket != null }
   def reconnect = { disconnect && connect }
-  
+
   // Connects the socket, and sets the input and output streams.
   def connect: Boolean = {
     try {
@@ -45,7 +39,7 @@ trait SocketOperations {
       case _ => clearFd; false;
     }
   }
-  
+
   // Disconnects the socket.
   def disconnect: Boolean = {
     try {
@@ -58,13 +52,13 @@ trait SocketOperations {
       case _ => false
     }
   }
-  
+
   def clearFd = {
     socket = null
     out = null
     in = null
   }
-  
+
   // Reads the server responses as Scala types.
   def readString: Option[String] = {
     readResponse match {
@@ -97,7 +91,7 @@ trait SocketOperations {
       case _ => None
     }
   }
-  
+
   // Read from Input Stream.
   def readline: String = {
     try {
@@ -106,7 +100,7 @@ trait SocketOperations {
       case _ => ERR;
     }
   }
-  
+
   // Gets the type of response the server is going to send.
   def readtype = {
     try {
@@ -120,7 +114,7 @@ trait SocketOperations {
       case e: Exception => (ERR, "")
     }
   }
-  
+
   // Reads the response from the server based on the response code.
   def readResponse: Option[Any] = {
     val responseType = readtype
@@ -144,9 +138,9 @@ trait SocketOperations {
       case s: String => Some(Integer.parseInt(s))
     }
   }
-  
+
   def lineReply(response: String): Option[String] = Some(response)
-  
+
   def bulkReply(response: String): Option[String] = {
     if(response(1).toString() != ERR){
       var length: Int = Integer.parseInt(response.split('$')(1).split("\r\n")(0))
@@ -191,10 +185,10 @@ trait SocketOperations {
       None
     }
   }
-  
+
   // Wraper for the socket write operation.
   def write_to_socket(data: String)(op: OutputStream => Unit) = op(getOutputStream)
-  
+
   // Writes data to a socket using the specified block.
   def write(data: String) = {
     if(!connected) connect;
@@ -207,7 +201,7 @@ trait SocketOperations {
         }
     }
   }
-  
+
   def writeMultiBulk(size: Int, command: String, arguments: Map[String, String]) = {
     write("*"+ (size+1) +"\r\n"+ bulkFormat(command) + mapToMultiBulkFormat(arguments))
   }
@@ -215,8 +209,8 @@ trait SocketOperations {
   def writeMultiBulk(size: Int, command: String, arguments: Seq[String]) = {
     write("*"+ (size+1) +"\r\n"+ bulkFormat(command) + arguments.map(bulkFormat(_)).mkString)
   }
-  
+
   def bulkFormat(value: String): String = "$"+ value.length+"\r\n"+ value +"\r\n"
-  
+
   def mapToMultiBulkFormat(m: Map[String, String]): String = m.map(x => bulkFormat(x._1) + bulkFormat(x._2)).mkString
 }
