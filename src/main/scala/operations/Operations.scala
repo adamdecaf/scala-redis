@@ -13,10 +13,9 @@ trait Operations {
     getConnection(key).write(CreateRedisCommand("EXPIRE", key, expiry.toString))
   }
 
-  def set(keyValues: Map[String, String]): Boolean = {
+  def set(keyValues: Map[String, String]): Unit = {
     val connection = getConnection(keyValues.toArray.apply(0)._1)
     connection.writeMultiBulk(keyValues.size * 2, "MSET", keyValues)
-    connection.readBoolean
   }
 
   def get(key: String): Option[String] = {
@@ -32,10 +31,9 @@ trait Operations {
   def setUnlessExists(key: String, value: String): Unit =
     getConnection(key).write(CreateRedisCommand("SETNX", key, value))
 
-  def setUnlessExists(keyValues: Map[String, String]): Boolean = {
+  def setUnlessExists(keyValues: Map[String, String]): Unit = {
     val connection = getConnection(keyValues.toArray.apply(0)._1)
     connection.writeMultiBulk(keyValues.size * 2, "MSETNX", keyValues)
-    connection.readBoolean
   }
 
   def delete(key: String): Unit =
