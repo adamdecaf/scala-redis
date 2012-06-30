@@ -8,7 +8,9 @@
 
 ## Information about redis
 
-Redis is a key-value database. It is similar to memcached but the dataset is not volatile, and values can be strings, exactly like in memcached, but also lists and sets with atomic operations to push/pop elements.
+Redis is a key-value database. It is similar to memcached but the dataset is not volatile,
+and values can be strings, exactly like in memcached, but also lists and sets with atomic
+operations to push/pop elements.
 
 http://code.google.com/p/redis/
 
@@ -44,3 +46,11 @@ let's connect and get a key:
 
 Alejandro Crosa <<alejandrocrosa@gmail.com>>
 
+Forked and modified by Adam Shannon <adam@ashannon.us>
+
+## Roadmap
+
+- Better connection creation methods
+- Support taking scala collections natively
+-- Maps, Sets, etc..
+- Reduce the complexity of the API. (One method to save, one to get, etc..)
