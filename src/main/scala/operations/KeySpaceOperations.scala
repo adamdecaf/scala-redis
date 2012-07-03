@@ -1,6 +1,6 @@
 package com.redis
 
-trait KeySpaceOperations{
+trait KeySpaceOperations {
 
   val connection: Connection
   var db: Int

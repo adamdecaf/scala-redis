@@ -23,7 +23,11 @@ trait Operations {
     getConnection(key).readResponse.map{_.toString}
   }
 
-  def get(key: String, value: String): Option[String] = {
+  def mget(key: String, keys: String*): Seq[String] =
+    (key :: keys.toList).flatMap{get(_)}
+
+  // Returns the previous value and sets the new value
+  def getSet(key: String, value: String): Option[String] = {
     getConnection(key).write(CreateRedisCommand("GETSET", key, value))
     getConnection(key).readResponse.map{_.toString}
   }

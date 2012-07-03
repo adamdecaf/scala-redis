@@ -1,54 +1,38 @@
 package com.redis
 
 trait NodeOperations {
-
   val connection: Connection
   var db: Int
 
-  // SAVE
-  // save the DB on disk now.
   def save: Boolean = {
     connection.write("SAVE\r\n")
     connection.readBoolean
   }
 
-  // BGSAVE
-  // save the DB in the background.
   def bgSave: Boolean = {
     connection.write("BGSAVE\r\n")
     connection.readBoolean
   }
 
-  // LASTSAVE
-  // return the UNIX TIME of the last DB SAVE executed with success.
+  // Return the UNIX TIME of the last DB SAVE executed with success.
   def lastSave: Option[Int] = {
     connection.write("LASTSAVE\r\n")
     connection.readInt
   }
 
-  // SHUTDOWN
   // Stop all the clients, save the DB, then quit the server.
   def shutdown: Boolean = {
     connection.write("SHUTDOWN\r\n")
     connection.readBoolean
   }
 
-  // MGET (key, key, key, ...)
-  // get the values of all the specified keys.
-  def mget(keys: String*) = {
-    connection.writeMultiBulk(keys.size, "MGET", keys)
-    connection.readList
-  }
-
-  // INFO
-  // the info command returns different information and statistics about the server.
+  // Return different information and statistics about the server.
   def info = {
     connection.write("INFO\r\n")
     connection.readResponse
   }
 
-  // MONITOR
-  // is a debugging command that outputs the whole sequence of commands received by the Redis server.
+  // A debugging command that outputs the whole sequence of commands received by the Redis server.
   def monitor: java.io.BufferedReader = {
     connection.write("MONITOR\r\n")
     connection.readBoolean
