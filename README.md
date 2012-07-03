@@ -54,3 +54,4 @@ Forked and modified by Adam Shannon <adam@ashannon.us>
 - Support taking scala collections natively
 -- Maps, Sets, etc..
 - Reduce the complexity of the API. (One method to save, one to get, etc..)
+- Fix up the queries so we can return them either as async or as sync.
