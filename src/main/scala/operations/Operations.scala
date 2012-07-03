@@ -23,8 +23,8 @@ trait Operations {
     getConnection(key).readResponse.map{_.toString}
   }
 
-  def mget(key: String, keys: String*): Seq[String] =
-    (key :: keys.toList).flatMap{get(_)}
+  def get(key: String, keys: String*): Seq[String] =
+    (get(key) :: keys.toList.map{get(_)}).flatten
 
   // Returns the previous value and sets the new value
   def getSet(key: String, value: String): Option[String] = {

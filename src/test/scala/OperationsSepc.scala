@@ -15,6 +15,11 @@ object OperationsSepc extends Specification {
       client.get("a").get must beEqualTo("BB").eventually(10, 500)
       client.get("b").get must beEqualTo("AA").eventually(10, 500)
     }
+
+    "and work for multiple pairs, even if they don't exist" in new CommonRedisSetup {
+      client.set(Map("g" -> "BB", "h" -> "AA"))
+      client.get("g", "h", "NOTEXIST") must beEqualTo(List("BB", "AA")).eventually(10, 500)
+    }
   }
 
   "Using SETNX to avoid overwriting values" should {
